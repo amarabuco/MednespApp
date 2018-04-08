@@ -1,7 +1,11 @@
+import { PalestranteService } from './../../providers/palestrante/palestrante.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
+import { SqliteHelperService } from './../../providers/sqlite-helper/sqlite-helper.service';
 
 import { ServiceProvider } from '../../providers/service/service';
+import { PalestrantePage } from '../palestrante/palestrante';
+import { Palestrante } from './../../models/palestrante.model';
 
 
 @IonicPage()
@@ -15,14 +19,34 @@ export class PalestrantesPage {
   public tabela:string = 'palestrante';
   searchQuery: string = '';
   items: string[];
+  palestrantes: Palestrante [] = [
+    new Palestrante ('!','!','!','!','!','!','!','!','!','!'),
+    new Palestrante ('?','?','?','?','?','?','?','?','?','?')  
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public service: ServiceProvider,public loadingCtrl: LoadingController) {
+  ];
 
+
+    constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public service: ServiceProvider,
+    public loadingCtrl: LoadingController,
+    public sqliteHelperService: SqliteHelperService,
+    public palestranteService: PalestranteService,
+    public palestrante: Palestrante
+    ) 
+    {
       this.getDados();
-      this.getPalestrantes();
+      this.getPalestrantes(); 
 
-  }
+    }
+
+    ionViewDidLoad(){
+      this.palestranteService.getAll()
+      .then((palestrantes: Palestrante[]) => {
+        this.palestrantes = palestrantes;
+      });
+    }
 
   getDados(){
 
@@ -41,7 +65,9 @@ export class PalestrantesPage {
   }
 
   getPalestrantes(){
-    this.service.getTabela('palestrante');
+    
+    this.service.getTabela('palestrante')
+  
   }
 
   getItems(ev: any) {
@@ -61,5 +87,17 @@ export class PalestrantesPage {
     }
   }
 
+      itemTapped(event, item) {
+    // That's right, we're pushing to ourselves!
+    this.navCtrl.push(PalestrantePage, {
+      item: item
+    });
+  }
+
+  onSave(){
+  
+
+  }
+  
 
 }

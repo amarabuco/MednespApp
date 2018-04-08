@@ -3,6 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { SQLite } from '@ionic-native/sqlite';
+
 
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -13,9 +17,9 @@ import { PalestrasPage } from '../pages/palestras/palestras';
 import { PalestrantePage } from '../pages/palestrante/palestrante';
 import { PalestrantesPage } from '../pages/palestrantes/palestrantes';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { ServiceProvider } from '../providers/service/service';
+import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.service';
+import { PalestranteService } from '../providers/palestrante/palestrante.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,7 @@ import { ServiceProvider } from '../providers/service/service';
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp)
-  ],
+      ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -47,10 +51,15 @@ import { ServiceProvider } from '../providers/service/service';
     PalestrantesPage    
   ],
   providers: [
-    ServiceProvider,
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}    
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PalestranteService,      
+    SQLite,
+    SqliteHelperService,
+    ServiceProvider
   ]
+  
+  
 })
 export class AppModule {}

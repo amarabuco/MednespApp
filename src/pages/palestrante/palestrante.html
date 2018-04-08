@@ -7,12 +7,69 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>palestrante</ion-title>
+    <ion-title>{{selectedItem.nome}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+    <div *ngIf="selectedItem" padding>
+        <ion-card>
+            <ion-card-header>
+                <ion-avatar item-start>
+               <img src="http://www.mednesp2019.com.br/admin/uploads/{{selectedItem.imagem}}"> 
+              </ion-avatar>
+            </ion-card-header>
+          </ion-card>
+              <h2> {{selectedItem.nome}} </h2>
+              <p *ngIf="selectedItem.origem">
+                  Origem: {{selectedItem.origem}}
+              </p>
+              <p *ngIf="selectedItem.profissao">
+                  Profissão: {{selectedItem.profissao}}
+              </p>
+           
+               <p class="social" *ngIf="selectedItem.mail"><ion-icon name="mail"></ion-icon>
+                   {{selectedItem.mail}}
+              </p>
+                <p class="social" *ngIf="selectedItem.site">
+                   <ion-icon name="logo-wordpress"></ion-icon> | <a href="{{selectedItem.site}}">
+                      {{selectedItem.site}}
+                    </a> 
+                  </p>
+                <p class="social" *ngIf="selectedItem.youtube">
+                  <ion-icon name="logo-youtube"></ion-icon> | 
+                  <a href="{{selectedItem.youtube}}">link do canal</a>
+                </p>
+                <p class="social" *ngIf="selectedItem.instagram">
+                  <ion-icon name="logo-instagram"></ion-icon> | 
+                  <a href="https://www.instagram.com/{{selectedItem.instagram}}">@{{selectedItem.instagram}}</a>
+                  
+                </p>
+                <p class="social" *ngIf="selectedItem.facebook">
+                  <ion-icon name="logo-facebook"></ion-icon> | 
+                  <a href="https://www.facebook.com/{{selectedItem.facebook}}">@{{selectedItem.facebook}}</a>
+                </p>
+                <p class="social" *ngIf="selectedItem.twitter">
+                  <ion-icon name="logo-twitter"></ion-icon> | <a href="https://twitter.com/{{selectedItem.twitter}}">@{{selectedItem.twitter}}</a>
+                </p>
+              
+                <p *ngIf="selectedItem.bio">
+                   {{selectedItem.bio}}<br>
+                </p>
+              
+            
+          <ion-list>
+              <h3>Palestras</h3>
+              <div *ngFor="let item of data">
+                <ion-item *ngIf="item.palestrante==selectedItem.nome">
+                  <p>Descrição: {{item.descricao}}</p>
+                  <p>Data: {{item.data | date:" d/M/yy" }}</p>
+                  <p>Inicio: {{item.hora_inicio }}</p>
+                  <p>Fim: {{item.hora_fim }}</p>
+                </ion-item>
+              </div>
+            </ion-list>
+    </div>
 </ion-content>

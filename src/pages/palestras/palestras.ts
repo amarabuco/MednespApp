@@ -11,13 +11,16 @@ import { ServiceProvider } from '../../providers/service/service';
 })
 export class PalestrasPage {
 
+  palestrantes: any;
   data: any;
-  public tabela:string = 'palestrante';
-
+  public tabela:string = 'palestra';
+  items: string[];
+  
   constructor(public navCtrl: NavController, public navParams: NavParams,public service: ServiceProvider,public loadingCtrl: LoadingController) {
 
     this.getDados();
-    this.getPalestrantes();
+    this.getPalestrante();
+
     }
 
     getDados(){
@@ -37,8 +40,19 @@ export class PalestrasPage {
       )
     }
 
-    getPalestrantes(){
-      this.service.getTabela('palestra');
+    getPalestrante(){
+
+      this.service.getData('palestrante').subscribe(
+          palestrantes => {
+            this.palestrantes = palestrantes
+          },
+          //data => console.log(data),
+          err => console.log(err)
+      )
+    }
+
+    setPalestrante(){
+      console.log(this.getPalestrante());
     }
 
     getItems(ev: any) {
@@ -51,11 +65,27 @@ export class PalestrasPage {
       // if the value is an empty string don't filter the items
       if (val && val.trim() != '') {
         this.data = this.data.filter((item) => {
-          return ((item.descricao+item.data).toLowerCase().indexOf(val.toLowerCase()) > -1);
+          return ((item.descricao+item.data+item.palestrante).toLowerCase().indexOf(val.toLowerCase()) > -1);
         })
       } else {
         this.getDados()
       }
     }
+
+
+  ionViewDidLoad() {
+    this.setPalestrante();
+    }
+
+  visible=false;
+  itemTapped(event, item) {
+    //console.log(event);
+    //console.log(item);
+    this.visible = !this.visible;
+    var icone = event.toElement;
+    icone;
+    console.log(icone);
+    }
+  
 
 }
